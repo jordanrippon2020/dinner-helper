@@ -5,6 +5,7 @@ import PreferencesForm from '@/components/PreferencesForm';
 import RecipeCard from '@/components/RecipeCard';
 import LoadingState from '@/components/LoadingState';
 import ErrorMessage from '@/components/ErrorMessage';
+import MealHistoryModal from '@/components/MealHistoryModal';
 import { Recipe } from '@/types/recipe';
 import { UserPreferences } from '@/types/preferences';
 
@@ -14,6 +15,7 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(true);
   const [currentPreferences, setCurrentPreferences] = useState<UserPreferences | null>(null);
+  const [showMealLog, setShowMealLog] = useState(false);
 
   const handleGenerate = async (preferences: UserPreferences) => {
     setLoading(true);
@@ -85,10 +87,27 @@ export default function Home() {
   return (
     <div className="container">
       <header>
-        <h1 className="brand">Nourish</h1>
-        <p className="tagline">
-          Your intelligent evening meal companion — personalized dinner ideas in seconds
-        </p>
+        <div className="header-content">
+          <div>
+            <h1 className="brand">Nourish</h1>
+            <p className="tagline">
+              Your intelligent evening meal companion — personalized dinner ideas in seconds
+            </p>
+          </div>
+          <button className="view-log-button" onClick={() => setShowMealLog(true)}>
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+            </svg>
+            <span>View Meal Log</span>
+          </button>
+        </div>
       </header>
 
       {showForm && <PreferencesForm onSubmit={handleGenerate} />}
@@ -114,6 +133,8 @@ export default function Home() {
           )}
         </div>
       )}
+
+      <MealHistoryModal isOpen={showMealLog} onClose={() => setShowMealLog(false)} />
     </div>
   );
 }
