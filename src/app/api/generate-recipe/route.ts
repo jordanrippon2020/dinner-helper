@@ -19,7 +19,7 @@ const PreferencesSchema = z.object({
 const MAX_RETRIES = 3;
 const INITIAL_RETRY_DELAY = 1000; // 1 second
 const REQUEST_TIMEOUT = 30000; // 30 seconds
-const MODELS = ['gemini-2.5-flash', 'gemini-1.5-flash']; // Fallback models (2.5 Flash is latest stable)
+const MODELS = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-2.5-flash-lite']; // Stable fallback models (1.5 Flash deprecated)
 
 // Sleep utility for retry delays
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
