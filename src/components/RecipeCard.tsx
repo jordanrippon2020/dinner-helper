@@ -1,5 +1,6 @@
 import { Recipe } from '@/types/recipe';
 import MealLogButton from './MealLogButton';
+import PlanMealButton from './PlanMealButton';
 
 interface RecipeCardProps {
   recipe: Recipe;
@@ -10,6 +11,7 @@ export default function RecipeCard({ recipe }: RecipeCardProps) {
     <div className="recipe-card">
       <div className="recipe-card-actions">
         <MealLogButton recipe={recipe} />
+        <PlanMealButton recipe={recipe} />
       </div>
       <h2 className="recipe-title">{recipe.name || 'Your Perfect Dinner'}</h2>
 
