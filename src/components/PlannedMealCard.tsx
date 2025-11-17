@@ -5,6 +5,7 @@ import { PlannedMeal } from '@/types/mealLog';
 import { deletePlannedMeal } from '@/lib/mealPlanner';
 import { saveMeal } from '@/lib/mealLogger';
 import DatePicker from './DatePicker';
+import RecipeDetailModal from './RecipeDetailModal';
 
 interface PlannedMealCardProps {
   meal: PlannedMeal;
@@ -14,7 +15,7 @@ interface PlannedMealCardProps {
 export default function PlannedMealCard({ meal, onUpdate }: PlannedMealCardProps) {
   const [showOptions, setShowOptions] = useState(false);
   const [showCompleteDialog, setShowCompleteDialog] = useState(false);
-  const [expanded, setExpanded] = useState(false);
+  const [showDetailModal, setShowDetailModal] = useState(false);
 
   const getMealName = () => {
     if (meal.recipe) {
@@ -65,84 +66,63 @@ export default function PlannedMealCard({ meal, onUpdate }: PlannedMealCardProps
   const nutrition = getNutrition();
 
   return (
-    <div className={`planned-meal-card ${expanded ? 'expanded' : ''}`}>
-      <div className="planned-meal-header" onClick={() => setExpanded(!expanded)}>
-        <h5 className="planned-meal-name">{getMealName()}</h5>
-        <button
-          className="planned-meal-options"
-          onClick={(e) => {
-            e.stopPropagation();
-            setShowOptions(!showOptions);
-          }}
-        >
-          ⋮
-        </button>
+    <>
+      <div className="planned-meal-card" onClick={() => setShowDetailModal(true)}>
+        <div className="planned-meal-header">
+          <h5 className="planned-meal-name">{getMealName()}</h5>
+          <button
+            className="planned-meal-options"
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowOptions(!showOptions);
+            }}
+          >
+            ⋮
+          </button>
+        </div>
+
+        <div className="planned-meal-nutrition-preview">
+          <span>{nutrition.calories} cal</span>
+          <span>{nutrition.protein}g protein</span>
+        </div>
+
+        {showOptions && (
+          <div className="planned-meal-options-menu" onClick={(e) => e.stopPropagation()}>
+            <button onClick={() => { setShowCompleteDialog(true); setShowOptions(false); }}>
+              ✓ Mark Completed
+            </button>
+            <button onClick={handleDelete} className="delete-option">
+              🗑️ Delete
+            </button>
+          </div>
+        )}
+
+        {showCompleteDialog && (
+          <div className="complete-dialog" onClick={(e) => e.stopPropagation()}>
+            <p>When did you eat this meal?</p>
+            <DatePicker
+              onSelectDate={handleMarkComplete}
+              minDate={(() => {
+                const d = new Date();
+                d.setDate(d.getDate() - 7); // Allow logging up to 7 days ago
+                return d;
+              })()}
+              maxDate={new Date()}
+            />
+            <button onClick={() => setShowCompleteDialog(false)} className="cancel-btn">
+              Cancel
+            </button>
+          </div>
+        )}
       </div>
 
-      {showOptions && (
-        <div className="planned-meal-options-menu">
-          <button onClick={() => { setShowCompleteDialog(true); setShowOptions(false); }}>
-            ✓ Mark Completed
-          </button>
-          <button onClick={handleDelete} className="delete-option">
-            🗑️ Delete
-          </button>
-        </div>
-      )}
-
-      {showCompleteDialog && (
-        <div className="complete-dialog">
-          <p>When did you eat this meal?</p>
-          <DatePicker
-            onSelectDate={handleMarkComplete}
-            minDate={(() => {
-              const d = new Date();
-              d.setDate(d.getDate() - 7); // Allow logging up to 7 days ago
-              return d;
-            })()}
-            maxDate={new Date()}
-          />
-          <button onClick={() => setShowCompleteDialog(false)} className="cancel-btn">
-            Cancel
-          </button>
-        </div>
-      )}
-
-      {expanded && (
-        <div className="planned-meal-details">
-          <div className="planned-meal-nutrition">
-            <span>{nutrition.calories} cal</span>
-            <span>{nutrition.protein}g protein</span>
-            <span>{nutrition.carbs}g carbs</span>
-            <span>{nutrition.fat}g fat</span>
-          </div>
-
-          {meal.recipe && (
-            <>
-              <div className="planned-meal-section">
-                <h6>Ingredients</h6>
-                <ul>
-                  {meal.recipe.ingredients.map((ingredient, idx) => (
-                    <li key={idx}>{ingredient}</li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="planned-meal-section">
-                <h6>Instructions</h6>
-                <p>{meal.recipe.instructions}</p>
-              </div>
-            </>
-          )}
-
-          {meal.manualMeal?.notes && (
-            <div className="planned-meal-section">
-              <h6>Notes</h6>
-              <p>{meal.manualMeal.notes}</p>
-            </div>
-          )}
-        </div>
-      )}
-    </div>
+      <RecipeDetailModal
+        isOpen={showDetailModal}
+        onClose={() => setShowDetailModal(false)}
+        recipe={meal.recipe}
+        manualMeal={meal.manualMeal}
+        mealType={meal.mealType}
+      />
+    </>
   );
 }

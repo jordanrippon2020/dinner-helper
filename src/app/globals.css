@@ -1967,6 +1967,7 @@ button.secondary:hover {
     padding: 12px;
     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     position: relative;
+    cursor: pointer;
 }
 
 .planned-meal-card:hover {
@@ -2116,6 +2117,204 @@ button.secondary:hover {
     font-weight: 600;
     color: var(--forest);
     margin-bottom: 12px;
+}
+
+.planned-meal-nutrition-preview {
+    margin-top: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.planned-meal-nutrition-preview span {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    padding: 3px 8px;
+    background: rgba(129, 178, 154, 0.12);
+    border-radius: 10px;
+    color: var(--data-slate);
+}
+
+/* ============================================
+   RECIPE DETAIL MODAL
+   ============================================ */
+
+.recipe-detail-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(26, 58, 46, 0.75);
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1002;
+    animation: fadeIn 0.3s ease;
+    padding: 20px;
+}
+
+.recipe-detail-modal {
+    background: var(--warm-white);
+    border-radius: 20px;
+    width: 100%;
+    max-width: 700px;
+    max-height: 90vh;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(26, 58, 46, 0.3);
+    animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    flex-direction: column;
+}
+
+.recipe-detail-header {
+    padding: 30px 30px 20px;
+    border-bottom: 2px solid var(--cream);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    flex-shrink: 0;
+}
+
+.recipe-detail-title {
+    font-family: 'Fraunces', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--forest);
+    margin: 0;
+    line-height: 1.2;
+}
+
+.recipe-detail-meal-type {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.9rem;
+    color: var(--sage);
+    margin: 8px 0 0;
+    text-transform: capitalize;
+    font-weight: 600;
+}
+
+.recipe-detail-close {
+    background: transparent;
+    border: none;
+    color: var(--data-slate);
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.recipe-detail-close:hover {
+    background: rgba(129, 178, 154, 0.15);
+    color: var(--forest);
+    transform: rotate(90deg);
+}
+
+.recipe-detail-nutrition {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+    gap: 15px;
+    padding: 20px 30px;
+    background: linear-gradient(135deg, rgba(129, 178, 154, 0.08), transparent);
+    border-bottom: 1px solid var(--cream);
+    flex-shrink: 0;
+}
+
+.recipe-detail-nutrition .nutrition-item {
+    text-align: center;
+}
+
+.recipe-detail-nutrition .nutrition-value {
+    font-family: 'Space Mono', monospace;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--forest);
+    margin-bottom: 4px;
+}
+
+.recipe-detail-nutrition .nutrition-label {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--data-slate);
+    font-weight: 600;
+}
+
+.recipe-detail-content {
+    padding: 30px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.recipe-detail-section {
+    margin-bottom: 30px;
+}
+
+.recipe-detail-section:last-child {
+    margin-bottom: 0;
+}
+
+.recipe-detail-section h3 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--forest);
+    margin: 0 0 15px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.recipe-detail-section p {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--data-slate);
+    margin: 0;
+}
+
+.recipe-detail-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.recipe-detail-list li {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.95rem;
+    line-height: 1.8;
+    color: var(--data-slate);
+    padding-left: 30px;
+    position: relative;
+    margin-bottom: 8px;
+}
+
+.recipe-detail-list li::before {
+    content: '•';
+    position: absolute;
+    left: 10px;
+    color: var(--sage);
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+
+.recipe-detail-instructions {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.95rem;
+    line-height: 1.8;
+    color: var(--data-slate);
+    white-space: pre-line;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
 }
 
 /* ============================================
