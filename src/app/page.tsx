@@ -13,6 +13,8 @@ export default function Home() {
   const [recipe, setRecipe] = useState<Recipe | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [errorSuggestions, setErrorSuggestions] = useState<string[] | undefined>(undefined);
+  const [errorTechnical, setErrorTechnical] = useState<string | undefined>(undefined);
   const [showForm, setShowForm] = useState(true);
   const [currentPreferences, setCurrentPreferences] = useState<UserPreferences | null>(null);
   const [showMealLog, setShowMealLog] = useState(false);
@@ -20,6 +22,8 @@ export default function Home() {
   const handleGenerate = async (preferences: UserPreferences) => {
     setLoading(true);
     setError(null);
+    setErrorSuggestions(undefined);
+    setErrorTechnical(undefined);
     setShowForm(false);
     setCurrentPreferences(preferences);
 
@@ -35,13 +39,17 @@ export default function Home() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to generate recipe');
+        setError(data.error || 'Failed to generate recipe');
+        setErrorSuggestions(data.suggestions);
+        setErrorTechnical(data.technicalDetails);
+        return;
       }
 
       setRecipe(data.recipe);
     } catch (err) {
       console.error('Error generating recipe:', err);
       setError(err instanceof Error ? err.message : 'An unknown error occurred');
+      setErrorSuggestions(['Check your internet connection', 'Try again in a few moments']);
     } finally {
       setLoading(false);
     }
@@ -52,6 +60,8 @@ export default function Home() {
 
     setLoading(true);
     setError(null);
+    setErrorSuggestions(undefined);
+    setErrorTechnical(undefined);
     setRecipe(null);
 
     try {
@@ -66,13 +76,17 @@ export default function Home() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to generate recipe');
+        setError(data.error || 'Failed to generate recipe');
+        setErrorSuggestions(data.suggestions);
+        setErrorTechnical(data.technicalDetails);
+        return;
       }
 
       setRecipe(data.recipe);
     } catch (err) {
       console.error('Error generating recipe:', err);
       setError(err instanceof Error ? err.message : 'An unknown error occurred');
+      setErrorSuggestions(['Check your internet connection', 'Try again in a few moments']);
     } finally {
       setLoading(false);
     }
@@ -116,7 +130,13 @@ export default function Home() {
         <div id="results">
           {loading && <LoadingState />}
 
-          {error && !loading && <ErrorMessage message={error} />}
+          {error && !loading && (
+            <ErrorMessage
+              message={error}
+              suggestions={errorSuggestions}
+              technicalDetails={errorTechnical}
+            />
+          )}
 
           {recipe && !loading && !error && (
             <>

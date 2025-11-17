@@ -563,6 +563,115 @@ button.secondary:hover {
     margin: 10px 0;
 }
 
+.error-icon {
+    font-size: 3rem;
+    margin-bottom: 16px;
+    animation: errorShake 0.5s ease;
+}
+
+@keyframes errorShake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+.error-main-message {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--forest);
+    margin-bottom: 20px;
+}
+
+.error-suggestions {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 20px;
+    text-align: left;
+    border: 1px solid rgba(224, 122, 95, 0.2);
+}
+
+.error-suggestions h4 {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--forest);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.error-suggestions h4::before {
+    content: '💡';
+    font-size: 1.2rem;
+}
+
+.error-suggestions ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.error-suggestions li {
+    padding: 10px 0;
+    padding-left: 28px;
+    position: relative;
+    color: var(--charcoal);
+    line-height: 1.6;
+}
+
+.error-suggestions li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--sage);
+    font-weight: bold;
+}
+
+.error-suggestions li:not(:last-child) {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.error-fallback {
+    font-size: 0.95rem;
+    color: var(--data-slate);
+    margin-top: 12px;
+}
+
+.error-technical {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(224, 122, 95, 0.2);
+}
+
+.error-technical summary {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--data-slate);
+    cursor: pointer;
+    user-select: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.error-technical summary:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.error-technical p {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--data-slate);
+    background: rgba(0, 0, 0, 0.03);
+    padding: 12px;
+    border-radius: 6px;
+    margin-top: 12px;
+    text-align: left;
+    word-break: break-word;
+}
+
 /* ========================================
    MEAL TRACKING STYLES
    ======================================== */
